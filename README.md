@@ -17,11 +17,13 @@ Supports user authentication with JWT, poll creation, voting (with change suppor
 Setup & Installation
 
  Clone the repository
-    git clone https://github.com/Abhishekgautam-89/Move37.git
-    cd Move37
+   - git clone https://github.com/Abhishekgautam-89/Move37.git
+
+   - cd Move37
 
 Install dependencies
-    npm install
+
+   - npm install
 
 Configure environment variables
 
@@ -35,37 +37,54 @@ Configure environment variables
         # Application port
         PORT=5000
 
+        # Cookie-token expiry
+        APITOKENEXPIRY= "30d"
+        
+        # Salt to hash password
+        SALTROUND = 10
 
-Setup database
+        # Token for front application
+        DOMAIN=localhost
+
+Setup database:
+
     npx prisma migrate dev --name init
 
-Run the server
+Run the server:
+
   npm run dev
 
 Rest API Endpoints
-    Method	    Endpoint	             Description	                           Body                         Auth Required
 
    User
-    POST	    /user	                 Register a new user	                   name, email, password            NO
-    POST	    /user/login	             Login & get token	                       email, password                  NO
+
+    Method	    Endpoint	             Description	                           Body                         Auth Required 
+    POST	      /user	                 Register a new user	                   name, email, password            NO
+    POST	      /user/login	           Login & get token	                     email, password                  NO
 
    Polls
-    
-    POST	    /polls	                 Create a new poll (with options)	       question, options                YES
-    GET	        /polls	                 Get all polls	                                                            NO
-    GET	        /polls/:id	             Get single poll with vote counts	                                        NO
 
-   Voting   
-    POST	    /votes	                 Cast vote in poll	                       optionId                         YES
+    Method	    Endpoint	             Description	                           Body                         Auth Required    
+    POST	    /polls	                 Create a new poll (with options)	       question, options               YES
+    GET	        /polls	               Get all polls	                                                         NO
+    GET	        /polls/:id	           Get single poll with vote counts	                                       NO
+
+   Voting 
+
+    Method	    Endpoint	             Description	                           Body                         Auth Required  
+    POST	    /votes	                 Cast vote in poll	                     optionId                      YES
 
 
 WebSockets
+
   Clients connect via ws://localhost:5000
 
   Join a poll room:
+
     socket.emit("joinPoll", pollId);
 
   Listen for real-time updates:
+
     socket.on("pollUpdate", (results) => {
     console.log("Updated poll results:", results);
     });  
